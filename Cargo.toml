@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = ["crates/ferroauth"]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+
+# Password hashing is unbearably slow unoptimized; keep the crypto fast in dev/test.
+[profile.dev.package.scrypt]
+opt-level = 3
+[profile.dev.package.salsa20]
+opt-level = 3
+[profile.dev.package.pbkdf2]
+opt-level = 3
+[profile.dev.package.sha2]
+opt-level = 3
+[profile.dev.package.hmac]
+opt-level = 3

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ferroauth demo</title>
+<style>
+  :root { --bg:#fafaf9; --fg:#1c1917; --muted:#78716c; --card:#fff; --line:#e7e5e4; --accent:#c2410c; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0c0a09; --fg:#f5f5f4; --muted:#a8a29e; --card:#1c1917; --line:#292524; --accent:#fb923c; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--fg); padding:32px 16px; }
+  main { max-width:420px; margin:0 auto; display:grid; gap:16px; }
+  h1 { font-size:22px; margin:0; } p { margin:0; color:var(--muted); }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:grid; gap:8px; }
+  input, button { font:inherit; padding:8px 10px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--fg); }
+  button { background:var(--accent); color:#fff; border:0; cursor:pointer; }
+  button.secondary { background:transparent; color:var(--fg); border:1px solid var(--line); }
+  pre { margin:0; white-space:pre-wrap; word-break:break-all; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>ferroauth demo</h1>
+  <p>Authentication for Rust/Axum.</p>
+  <section>
+    <input id="name" placeholder="Name" value="Demo User">
+    <input id="email" type="email" placeholder="Email" value="demo@example.com">
+    <input id="password" type="password" placeholder="Password" value="password123">
+    <button onclick="call('/sign-up/email', {name: v('name'), email: v('email'), password: v('password')})">Sign up</button>
+    <button class="secondary" onclick="call('/sign-in/email', {email: v('email'), password: v('password')})">Sign in</button>
+    <button class="secondary" onclick="call('/sign-in/magic-link', {email: v('email')})">Email me a magic link (see server log)</button>
+  </section>
+  <section>
+    <button class="secondary" onclick="get('/api/auth/get-session')">Get session</button>
+    <button class="secondary" onclick="get('/api/me')">Call protected /api/me</button>
+    <button class="secondary" onclick="call('/sign-out', {})">Sign out</button>
+  </section>
+  <section><pre id="out">…</pre></section>
+</main>
+<script>
+  const v = id => document.getElementById(id).value;
+  const show = async r => { document.getElementById('out').textContent = r.status + '\n' + JSON.stringify(await r.json().catch(() => null), null, 2); };
+  const call = (path, body) => fetch('/api/auth' + path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(show);
+  const get = path => fetch(path).then(show);
+</script>
+</body>
+</html>

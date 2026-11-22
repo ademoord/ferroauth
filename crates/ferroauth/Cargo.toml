@@ -1,0 +1,51 @@
+[package]
+name = "ferroauth"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "A comprehensive, batteries-included authentication framework for Axum."
+repository = "https://github.com/ademoord/ferroauth"
+homepage = "https://github.com/ademoord/ferroauth"
+readme = "../../README.md"
+keywords = ["auth", "authentication", "axum", "oauth", "2fa"]
+categories = ["authentication", "web-programming::http-server"]
+
+[features]
+default = ["sqlx", "oauth"]
+sqlx = ["dep:sqlx"]
+oauth = ["dep:reqwest"]
+
+[dependencies]
+axum = { version = "0.8", features = ["json", "query", "form"] }
+async-trait = "0.1"
+base64 = "0.22"
+chacha20poly1305 = "0.10"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde", "std"] }
+getrandom = "0.3"
+hmac = "0.12"
+http = "1"
+percent-encoding = "2"
+scrypt = { version = "0.11", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha1 = "0.10"
+sha2 = "0.10"
+subtle = "2"
+thiserror = "2"
+tokio = { version = "1", features = ["sync", "rt"] }
+tracing = "0.1"
+unicode-normalization = "0.1"
+url = "2"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"], optional = true }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "any", "sqlite", "postgres", "mysql"], optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+tower = { version = "0.5", features = ["util"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+url = "2"
+async-trait = "0.1"
+reqwest = { version = "0.12", default-features = false }
+sqlx = { version = "0.8", default-features = false, features = ["any", "sqlite", "runtime-tokio"] }
+serde_json = "1"
+axum = "0.8"

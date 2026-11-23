@@ -1,0 +1,8 @@
+version: 2
+
+secret:
+  # Test suites and the demo app use throwaway credentials such as
+  # "password123" by design. Nothing in these folders is a real secret.
+  ignored_paths:
+    - "crates/ferroauth/tests/**"
+    - "crates/ferroauth/examples/**"
